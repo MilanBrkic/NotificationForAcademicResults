@@ -1,4 +1,4 @@
-package notification;
+package result.notification;
 
 import java.util.Properties;
 
@@ -26,7 +26,7 @@ public class Gmail extends Thread{
 		}
 	}
 	
-	public static Session pripremaZaSlanje(String myEmail, String password) {
+	public static Session pripremaZaSlanje(final String myEmail, final String password) {
 		Properties properties = new Properties();
 		
 		properties.put("mail.smtp.auth", "true");

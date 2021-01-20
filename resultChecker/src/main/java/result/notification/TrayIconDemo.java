@@ -1,4 +1,4 @@
-package notification;
+package result.notification;
 
 import java.awt.*;
 import java.awt.TrayIcon.MessageType;

@@ -1,0 +1,50 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>resultChecker</groupId>
+  <artifactId>results</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <name>results</name>
+  <url>http://maven.apache.org</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+    
+    <dependency>
+  <groupId>javax.mail</groupId>
+  <artifactId>javax.mail-api</artifactId>
+  <version>1.6.2</version>
+</dependency>
+
+<dependency>
+  <groupId>javax.activation</groupId>
+  <artifactId>javax.activation-api</artifactId>
+  <version>1.2.0</version>
+</dependency>
+
+<dependency>
+  <groupId>com.deque.html.axe-core</groupId>
+  <artifactId>selenium</artifactId>
+  <version>4.1.1</version>
+</dependency>
+
+<dependency>
+  <groupId>org.openqa.selenium</groupId>
+  <artifactId>selenium-rc</artifactId>
+  <version>1.0-20081010.060147</version>
+  <type>pom</type>
+</dependency>
+  </dependencies>
+</project>
