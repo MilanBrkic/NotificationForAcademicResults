@@ -1,5 +1,6 @@
 package result.checker;
 
+import domain.MyMessage;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -20,75 +21,83 @@ import result.notification.TrayIconDemo;
 
 import java.awt.*;
 
+public class ResultChecker extends Thread {
 
+     MyMessage msg;
 
-public class ResultChecker {
-	
-	public static void main(String[] args) {
-		WebDriver driver = null;
-		try {
-			
-			
-			
-			System.setProperty("webdriver.chrome.driver", "C:\\Users\\user\\scrapmate\\results\\driver\\chromedriver.exe");
-			
-			ChromeOptions options = new ChromeOptions();
-			options.setHeadless(true);
-			driver = new ChromeDriver(options);
-			
-			
-			driver.navigate().to("http://is.fon.bg.ac.rs/");
-			
-			WebElement wb = driver.findElement(By.xpath("/html"));
-			String prviInnerHtml = wb.getAttribute("innerHTML");
-			System.out.println("uzet prvi html");
-			
-			
-			
-			
-			while(true) {
-				try {
-					Thread.sleep(300000);
-				} catch (Exception e) {
-					// TODO: handle exception
-				}
-				driver.navigate().to("http://is.fon.bg.ac.rs/");
-				
-				WebElement wb2 = driver.findElement(By.xpath("/html"));
-				
-				String drugiInnerHtml = wb2.getAttribute("innerHTML");
-				
-				boolean rez = prviInnerHtml.equals(drugiInnerHtml);
-				System.out.println(rez);
-				if(!rez) {
-					sendMailAndNotification();
-					prviInnerHtml = drugiInnerHtml;
-				}
-				
-			}
-		} catch (Exception e) {
-			if(driver!=null) driver.close();
-			e.printStackTrace();
-		}
-		
-		
-	}
-	
-	
-	private static void sendMailAndNotification() {
-		String myself = "milan.brkic1998@gmail.com";
-		TrayIconDemo td = new TrayIconDemo();
-	    
-	    try {
-	    	td.displayTray();
-			Gmail.sendMail(myself);
-			
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-	}
-	
+    public ResultChecker(MyMessage msg) {
+        this.msg = msg;
+    }
+    
+    
+
+    @Override
+    public void run() {
+       WebDriver driver = null;
+        try {
+            String webpage = msg.getWebpage();
+            System.setProperty("webdriver.chrome.driver", "C:\\Users\\user\\scrapmate\\results\\driver\\chromedriver.exe");
+
+            ChromeOptions options = new ChromeOptions();
+//            options.setHeadless(true);
+            driver = new ChromeDriver(options);
+
+            driver.navigate().to(webpage);
+
+            WebElement wb = driver.findElement(By.xpath("/html"));
+            String prviInnerHtml = wb.getAttribute("innerHTML");
+            System.out.println("uzet prvi html");
+            int seconds = msg.getSeconds()*1000;
+            while (true) {
+                try {
+                    Thread.sleep(seconds);
+                } catch (Exception e) {
+                    // TODO: handle exception
+                }
+                driver.navigate().to(webpage);
+                try {
+                    Thread.sleep(20000);
+                } catch (Exception e) {
+                    // TODO: handle exception
+                }
+                WebElement wb2 = driver.findElement(By.xpath("/html"));
+
+                String drugiInnerHtml = wb2.getAttribute("innerHTML");
+
+                boolean rez = prviInnerHtml.equals(drugiInnerHtml);
+                System.out.println(rez);
+                if (!rez) {
+                    sendMailAndNotification();
+                    prviInnerHtml = drugiInnerHtml;
+                }
+
+            }
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        } finally {
+            if (driver != null) {
+                driver.close();
+            }
+        }
+    }
+    
+    
+    
+
+    private void sendMailAndNotification() {
+        
+        TrayIconDemo td = new TrayIconDemo();
+
+        try {
+            td.displayTray();
+            new Gmail().sendMail(msg);
+
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+    }
 
 }
